@@ -1,11 +1,38 @@
-const playerMove =  'rock'
+const playerMove =  computerMove();
 
 let scores = JSON.parse(localStorage.getItem('scores')) || {Wins:0, lost:0, Tie:0}
 
+let isautoplay = false;
+
+function autoPlay()
+{
+
+if(!isautoplay)
+  {
+    playId = setInterval(() => {
+      const playerMove = computerMove();
+      playGame(playerMove);
+
+    }, 3000);
+
+  }
+}
+
+document.body.addEventListener('keydown', (Event) => {
+  if(Event.key === 'r' || Event.key === 'R'){
+    playGame('Rock');
+  }
+  else if(Event.key === 's' || Event.key === 'S'){
+    playGame('scissors');
+  }
+  else if(Event.key === 'p' || Event.key === 'P'){
+    playGame('Paper');
+  }
+
+});
 
 function computerMove()
 {
-
   const randomMove = Math.floor(Math.random() * 10) + 1;
 
   let computerMove = '';
@@ -28,8 +55,9 @@ function computerMove()
    return computerMove;
 }
 
+computerMove();
 
-function playGame()
+function playGame(playerMove)
 {
  let result = '';
   if(computerMove === 'rock'){
@@ -69,7 +97,7 @@ function playGame()
   }
 
   if(result === 'You Win!!'){
-    scores.Wins += 1;
+    scores.Wins += 1; 
   }
   else if(result === 'You Lost!'){
     scores.lost += 1;
@@ -79,4 +107,5 @@ function playGame()
   }
 localStorage.setItem('scores',JSON.stringify(scores));
   }
+
 
